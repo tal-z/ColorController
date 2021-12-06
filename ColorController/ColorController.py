@@ -1,5 +1,5 @@
 from ColorController.show_color import show_named_color, show_coded_color
-from ColorController.conversions import rgb_to_hex, format_hsv, unlist, hex_to_rgb#, invert_rgb, colorsys_hsv_to_hsv360, hsv360_to_hsvdistance
+from ColorController.conversions import rgb_to_hex, format_hsv, unlist, hex_to_rgb
 from ColorController.namelookup import find_closest_color_names, query_hex_codes
 import colorsys
 

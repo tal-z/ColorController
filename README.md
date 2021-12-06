@@ -31,7 +31,7 @@ See the colornames.txt document contained herein, with enormous thanks to
 The following code:
 
 ```python
-from ColorController.ColorController import ColorController
+from ColorController import ColorController
 
 color = ColorController(name='hazel')
 
@@ -153,7 +153,7 @@ def hsv360_to_hsvdistance(hsv360=tuple):
 #### Example 2.1: Darken a color.
 You can darken a color using the darken_color() method. For example:
 ```python
-from ColorController.ColorController import ColorController
+from ColorController import ColorController
 
 color = ColorController(name='forest')
 
@@ -213,7 +213,7 @@ Shows the following in series:
 Example:
 ```python
 from ColorController.conversions import invert_rgb
-from ColorController.ColorController import ColorController
+from ColorController import ColorController
 
 
 color = ColorController(hex_code='#9ffeb0')
