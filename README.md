@@ -1,5 +1,13 @@
 # ColorController.py
 
+Welcome to the ColorController Python library! 
+
+My name is Tal Zaken, and I wrote this library for use in a natural language processing project 
+that aims to take in free-form text, and spit out color data which somehow relates to the text's 
+content. 
+
+Enough about that. Here are some things that you can do with ColorController:
+
 # Table of Contents
 1. [Encode color data in various formats.](#1-encode-color-data-in-various-formats)
    - [1.1: Create a ColorController object using a familiar, english-language color name, and print out its properties.](#example-11-create-a-colorcontroller-object-using-a-familiar-english-language-color-name-and-print-out-its-properties)
@@ -12,14 +20,6 @@
 4. [Access a rich set of color values and color names](#4-access-a-rich-set-of-color-values-and-color-names-prepared-by-martin-krzywinski-conveniently-stored-in-a-pandas-dataframe)
 
 
-
-Welcome to the ColorController Python library! 
-
-My name is Tal Zaken, and I wrote this library for use in a natural language processing project 
-that aims to take in free-form text, and spit out color data which somehow relates to the text's 
-content. 
-
-Enough about that. Here are some things that you can do with ColorController:
 
 ## 1. Encode color data in various formats.
 #### Example 1.1: Create a ColorController object using a familiar, english-language color name, and print out its properties.
