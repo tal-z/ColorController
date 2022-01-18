@@ -26,7 +26,7 @@ colors_df = colors_df[
        'CMYK', 'C_CMYK', 'M_CMYK', 'Y_CMYK', 'K_CMYK', 'NEIGHBOUR_STR', 'NUM_NEIGHBOURS_MAXDE',
        'WORD_TAGS']
 ]
-colors_df.columns = ['index', 'NAME', 'RGB', 'R_RGB', 'G_RGB', 'B_RGB', 'HEX', 'HSV', 'h', 's', 'v',
+colors_df.columns = ['index', 'NAME', 'RGB', 'R_RGB', 'G_RGB', 'B_RGB', 'HEX', 'HSV', 'H_HSV', 'S_HSV', 'V_HSV',
        'XYZ', 'X_XYZ', 'Y_XYZ', 'Z_XYZ', 'LAB', 'L_LAB', 'A_LAB', 'B_LAB', 'LCH', 'L_LCH', 'C_LCH', 'H_LCH',
        'CMYK', 'C_CMYK', 'M_CMYK', 'Y_CMYK', 'K_CMYK', 'NEIGHBOUR_STR', 'NUM_NEIGHBOURS_MAXDE',
        'WORD_TAGS']
@@ -72,7 +72,7 @@ def find_closest_color_names(hex_str=str):
 
     closenames_df = pd.DataFrame(colors_df)
     closenames_df['hsv'] = [(h, s, v) for h, s, v in
-                            zip(closenames_df['h'], closenames_df['s'], closenames_df['v'])]
+                            zip(closenames_df['H_HSV'], closenames_df['S_HSV'], closenames_df['V_HSV'])]
     closenames_df['hsv'] = closenames_df['hsv'].apply(hsv360_to_hsvdistance)
     closenames_df['distance'] = closenames_df['hsv'].apply(lambda x: measure_hsv_distance((h1, s1, v1), x))
 

@@ -1,5 +1,5 @@
 from ColorController.ColorController import ColorController
 
-blue = ColorController(name='lemon')
+lemon = ColorController(name='lemon')
 
-blue.show_color()
+lemon.show_color()
