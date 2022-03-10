@@ -7,7 +7,7 @@ import colorsys
 
 CURRENT_DIR = os.path.dirname(__file__)
 
-with sqlite3.connect(r'ColorController/colornames.db') as con:
+with sqlite3.connect(os.path.join(CURRENT_DIR, 'colornames.db')) as con:
     cur = con.cursor()
 
 sql = """
