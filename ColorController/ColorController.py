@@ -1,7 +1,16 @@
+from statistics import mean
+import colorsys
+from enum import Enum
+
 from ColorController.show_color import show_named_color, show_coded_color
 from ColorController.conversions import rgb_to_hex, format_hsv, unlist, hex_to_rgb
 from ColorController.namelookup import find_closest_color_names, query_hex_codes
-import colorsys
+
+class ColorType(Enum):
+    NAMED = 'named'
+    CODED = 'coded'
+
+
 
 class ColorController:
 
@@ -18,6 +27,7 @@ class ColorController:
         name --> 'maroon'
         """
         if hex_code:
+            self.type = ColorType.CODED
             self._hex_code = hex_code
             self._rgb = hex_to_rgb(hex_code)
             red, green, blue = self._rgb
@@ -25,6 +35,7 @@ class ColorController:
             self._hsv = format_hsv(h, s, v)
             self._name = find_closest_color_names(hex_code)
         elif rgb:
+            self.type = ColorType.CODED
             red, green, blue = rgb
             self._hex_code = rgb_to_hex(red, green, blue)
             self._rgb = rgb
@@ -32,6 +43,7 @@ class ColorController:
             self._hsv = format_hsv(h, s, v)
             self._name = find_closest_color_names(self._hex_code)
         elif hsv:
+            self.type = ColorType.CODED
             h, s, v = hsv
             red, green, blue = colorsys.hsv_to_rgb(h, s, v)
             self._rgb = int(red), int(green), int(blue)
@@ -39,6 +51,7 @@ class ColorController:
             self._hsv = hsv
             self._name = find_closest_color_names(self._hex_code)
         elif name:
+            self.type = ColorType.NAMED
             self._hex_code = query_hex_codes(name)
             self._rgb = [hex_to_rgb(code) for code in self._hex_code]
             hsv_list = []
@@ -68,6 +81,7 @@ class ColorController:
         a ColorController object is provided with a new name property, this bit of code is responsible for updating all
         of the other properties. This is where the magic happens.
         """
+        self.type = ColorType.NAMED
         self._name = new_name
         self._hex_code = query_hex_codes(new_name)
         self._rgb = [hex_to_rgb(code) for code in self._hex_code]
@@ -90,6 +104,7 @@ class ColorController:
         """
         This is the hex_code setter. It also works the same as the name_setter.
         """
+        self.type = ColorType.CODED
         self._hex_code = new_hex_code
         self._name = find_closest_color_names(new_hex_code)
         self._rgb = hex_to_rgb(new_hex_code)
@@ -106,6 +121,7 @@ class ColorController:
     @rgb.setter
     def rgb(self, new_rgb):
         """This is the rgb setter."""
+        self.type = ColorType.CODED
         self._rgb = new_rgb
         red, green, blue = self._rgb
         self._name = find_closest_color_names(rgb_to_hex(red, green, blue))
@@ -124,6 +140,7 @@ class ColorController:
         """This is the hsv setter. It has one extra step, because it is necessary
         to unpack the .hsv 3-tuple in order to convert back to rgb.
         """
+        self.type = ColorType.CODED
         self._hsv = new_hsv
         h, s, v = new_hsv
         red, green, blue = colorsys.hsv_to_rgb(h, s, v)
@@ -137,6 +154,7 @@ class ColorController:
         Takes a hex code and returns a hex code for a darker shade of the original hex code.
         Takes "darkening_value" as an optional input. Darkening value is a float between 0 and 1.
         """
+        self.type = ColorType.CODED
         print("darkening color")
         h, s, v = unlist(self.hsv)
         v = v * (1 - darkening_value)
@@ -147,6 +165,7 @@ class ColorController:
         Takes a hex code and returns a hex code for a lighter shade of the original hex code.
         Takes "lightening_value" as an optional input. Lightening value is a float between 0 and 1.
         """
+        self.type = ColorType.CODED
         print("lightening color")
         h, s, v = unlist(self.hsv)
         s = s * (1 - lightening_value)
@@ -158,6 +177,7 @@ class ColorController:
         Takes a hex code and returns a hex code for a brighter shade of the original hex code.
         Takes "brightening_value" as an optional input. Brightening value is a float between 0 and 1.
         """
+        self.type = ColorType.CODED
         print("brightening color")
         h, s, v = unlist(self.hsv)
         s = min((s + ((1 - s) * brightening_value)), 1)
@@ -165,9 +185,14 @@ class ColorController:
         self.hsv = format_hsv(h, s, v)
 
     def show_color(self, *args, **kwargs):
-        if type(self.hex_code) == list:
+        if self.type == ColorType.NAMED:
             show_named_color(self)
         else:
             show_coded_color(self)
+
+    def __add__(self, other):
+        new_rgb = tuple(int(mean(ch)) for ch in zip(unlist(self.rgb), unlist(other.rgb)))
+        return ColorController(rgb=new_rgb)
+
 
 

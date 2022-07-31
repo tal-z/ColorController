@@ -6,7 +6,7 @@ def unlist(object):
     Else, it returns the object unmodified."""
     if object == []:
         return ''
-    elif type(object) == list:
+    elif isinstance(object, list):
         return object[0]
     else:
         return object
