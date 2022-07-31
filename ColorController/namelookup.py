@@ -1,37 +1,25 @@
 import os
 import pandas as pd
-import sqlite3
 from math import sin, cos
 from ColorController.conversions import hex_to_rgb, colorsys_hsv_to_hsv360, hsv360_to_hsvdistance
 import colorsys
 
 CURRENT_DIR = os.path.dirname(__file__)
 
-with sqlite3.connect(os.path.join(CURRENT_DIR, 'colornames.db')) as con:
-    cur = con.cursor()
-
-sql = """
-    SELECT * FROM colors
-"""
-
-colors_df = pd.read_sql(sql, con)
-for col in colors_df.columns:
-    if type(colors_df[col][0]) == str and colors_df[col][0][0] == '(':
-        colors_df[col] = colors_df[col].apply(lambda x: x.lstrip("(").rstrip(")"))
-        colors_df[[*[f"{letter}_{col}" for letter in col]]] = colors_df[col].str.split(",", expand=True)
-
-colors_df = colors_df[
-    ['index', 'NAME', 'RGB', 'R_RGB', 'G_RGB', 'B_RGB', 'HEX', 'HSV', 'H_HSV', 'S_HSV', 'V_HSV',
-       'XYZ', 'X_XYZ', 'Y_XYZ', 'Z_XYZ', 'LAB', 'L_LAB', 'A_LAB', 'B_LAB', 'LCH', 'L_LCH', 'C_LCH', 'H_LCH',
-       'CMYK', 'C_CMYK', 'M_CMYK', 'Y_CMYK', 'K_CMYK', 'NEIGHBOUR_STR', 'NUM_NEIGHBOURS_MAXDE',
-       'WORD_TAGS']
-]
-colors_df.columns = ['index', 'NAME', 'RGB', 'R_RGB', 'G_RGB', 'B_RGB', 'HEX', 'HSV', 'H_HSV', 'S_HSV', 'V_HSV',
-       'XYZ', 'X_XYZ', 'Y_XYZ', 'Z_XYZ', 'LAB', 'L_LAB', 'A_LAB', 'B_LAB', 'LCH', 'L_LCH', 'C_LCH', 'H_LCH',
-       'CMYK', 'C_CMYK', 'M_CMYK', 'Y_CMYK', 'K_CMYK', 'NEIGHBOUR_STR', 'NUM_NEIGHBOURS_MAXDE',
-       'WORD_TAGS']
+colors_df = pd.read_csv(os.path.join(CURRENT_DIR, 'colornames.txt'), delimiter=" ", skiprows=60, header=None)
 
 
+
+colors_df.columns = ['IDX', 'NAME',
+                     'rgb', 'R', 'G', 'B',
+                     'hex', 'HEX',
+                     'hsv', 'h', 's', 'v',
+                     'xyz', 'X', 'Y', 'Z',
+                     'lab', 'L', 'A', 'B',
+                     'lch', 'L', 'C', 'H',
+                     'cmyk', 'C', 'M', 'Y', 'K',
+                     'NEIGHBOUR_STR', 'NUM_NEIGHBOURS_MAXDE', 'WORD_TAGS']
+colors_df['WORD_TAGS'] = colors_df['WORD_TAGS'].apply(lambda x: x.split(":"))
 
 
 
@@ -72,7 +60,7 @@ def find_closest_color_names(hex_str=str):
 
     closenames_df = pd.DataFrame(colors_df)
     closenames_df['hsv'] = [(h, s, v) for h, s, v in
-                            zip(closenames_df['H_HSV'], closenames_df['S_HSV'], closenames_df['V_HSV'])]
+                            zip(closenames_df['h'], closenames_df['s'], closenames_df['v'])]
     closenames_df['hsv'] = closenames_df['hsv'].apply(hsv360_to_hsvdistance)
     closenames_df['distance'] = closenames_df['hsv'].apply(lambda x: measure_hsv_distance((h1, s1, v1), x))
 
