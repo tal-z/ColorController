@@ -1,4 +1,6 @@
 # ColorController.py
+[![PyPI](https://img.shields.io/pypi/dm/colorcontroller.svg)]()
+[![PyPI](https://img.shields.io/pypi/v/colorcontroller.svg)]()
 
 Welcome to the ColorController Python library! 
 
